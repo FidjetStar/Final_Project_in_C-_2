@@ -120,7 +120,7 @@ void inputFromRandom(int &n, int &m, int &k) { // генерация случа�
     std::cout << "Сгенерированные данные: N=" << n << ", M=" << m << ", K=" << k << "\n";
 }
 
-bool inputFromFile(int &n, int &m, int &k) { // ввод данных из файла
+bool inputFromFile(int &n, int &m, int &k) {
     std::cout << "Введите имя файла: ";
     std::string filename;
     std::getline(std::cin, filename);
@@ -129,16 +129,20 @@ bool inputFromFile(int &n, int &m, int &k) { // ввод данных из фа�
         return false;
     }
     if (!(file >> n >> m >> k)) {
-        std::cout << "Ошибка чтения данных из файла\n";
-        return false;
+        throw std::runtime_error("Ошибка чтения данных из файла");
     }
     file.close();
+    if (n <= 0 || k <= 0 || m < 1 || m > 31) {
+        throw std::runtime_error("Некорректные значения: N>0, K>0, M от 1 до 31");
+    }
+    
     return true;
 }
 
 //========================================================================================================================
+// помечаем выброшенный тюк в итоговом списке, устанавливая его значение в -1
 
-void MarkThrown(Linked_cyclic_list& resultList, int number) { // помечаем выброшенный тюк в итоговом списке, устанавливая его значение в -1
+void MarkThrown(Linked_cyclic_list& resultList, int number) {
     Node* cur = resultList.getHead();
     do {
         if (cur->getData() == number) {
