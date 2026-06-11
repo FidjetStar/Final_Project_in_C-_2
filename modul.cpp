@@ -102,13 +102,43 @@ void Linked_cyclic_list::Print() const { // вывод элементов спи
 
 //========================================================================================================================
 
-void inputFromKeyboard(int &n, int &m, int &k) { // ввод данных с клавиатуры
+void inputFromKeyboard(int &n, int &m, int &k) { // ввод данных с клавиатуры с валидацией
     std::cout << "Введите N (кол-во тюков у каждого купца): ";
-    n = Validator::getValidNumber();
-    std::cout << "Введите M (номер стартовой позиции(число месяца 1-31)): ";
-    m = Validator::getValidChoice(1, 31);
-    std::cout << "Введите K (шаг, >0): ";
-    k = Validator::getValidNumber();
+    while (true) {
+        try {
+            n = Validator::getValidNumber();
+            break;
+        }
+        catch (const std::exception& e) {
+            std::cerr << e.what() << "\nПопробуйте снова: ";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+    }
+    std::cout << "Введите M (номер стартовой позиции 1-31): ";
+    while (true) {
+        try {
+            m = Validator::getValidChoice(1, 31);
+            break;
+        }
+        catch (const std::exception& e) {
+            std::cerr << e.what() << "\nПопробуйте снова: ";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+    }
+    std::cout << "Введите K (шаг > 0): ";
+    while (true) {
+        try {
+            k = Validator::getValidNumber();
+            break;
+        }
+        catch (const std::exception& e) {
+            std::cerr << e.what() << "\nПопробуйте снова: ";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+    }
 }
 
 void inputFromRandom(int &n, int &m, int &k) { // генерация случайных данных
@@ -122,20 +152,17 @@ void inputFromRandom(int &n, int &m, int &k) { // генерация случа�
 
 bool inputFromFile(int &n, int &m, int &k) {
     std::cout << "Введите имя файла: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
     std::string filename;
     std::getline(std::cin, filename);
     std::ifstream file(filename);
-    if (!Validator::isFileOpen(file, filename)) {
-        return false;
-    }
+    Validator::isFileOpen(file, filename);
     if (!(file >> n >> m >> k)) {
         throw std::runtime_error("Ошибка чтения данных из файла");
     }
-    file.close();
     if (n <= 0 || k <= 0 || m < 1 || m > 31) {
         throw std::runtime_error("Некорректные значения: N>0, K>0, M от 1 до 31");
     }
-    
     return true;
 }
 
