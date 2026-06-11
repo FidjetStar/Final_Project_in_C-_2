@@ -40,13 +40,13 @@ void IKM_menu() {
                 break;
             }  
             case 3: {
-                n = m = k = 0;  // защита от мусорных значений
-                inputFromFile(n, m, k);
-                if (n > 0 && k > 0 && m >= 1 && m <= 31) {
-                    IKM(n, m, k);
-                }
-                else {
-                    std::cout << "Некорректные данные из файла. Убедитесь, что N>0, K>0, M от 1 до 31.\n";
+                try {
+                    if (inputFromFile(n, m, k)) {
+                        IKM(n, m, k);
+                    }
+                } 
+                catch (const std::exception& e) {
+                    std::cout << e.what() << "\n";
                 }
                 break;
             }
@@ -70,16 +70,29 @@ int main() {
         std::cout << "0. Выход\n";
         std::cout << "==================================\n";
         std::cout << "Выберите пункт: ";
-        mainChoice = Validator::getValidChoice(0, 1);
-        switch (mainChoice) {
-            case 1: {
-                IKM_menu();
-                break;
+        try {
+            mainChoice = Validator::getValidChoice(0, 1);
+        } 
+        catch (const std::exception& e) {
+            std::cerr << "Ошибка: " << e.what() << "\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            continue;
+        }
+        try {
+            switch (mainChoice) {
+                case 1: {
+                    IKM_menu();
+                    break;
+                }
+                case 0: {
+                    std::cout << "\nПрограмма завершена\n";
+                    break;
+                }
             }
-            case 0: {
-                std::cout << "\nПрограмма завершена\n";
-                break;
-            }
+        } 
+        catch (const std::exception& e) {
+            std::cerr << "Ошибка при выполнении: " << e.what() << "\n";
         }
     }
     while (mainChoice != 0);
