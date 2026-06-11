@@ -67,7 +67,7 @@
 |---------|------------|
 | `static int getValidChoice(int min, int max)` | Проверяет, что введённое число в диапазоне [min, max] |
 | `static int getValidNumber()` | Проверяет, что введено положительное число (>0) |
-| `static bool isFileOpen(std::ifstream& file, const std::string& filename)` | Проверяет, открылся ли файл |
+| `static void isFileOpen(std::ifstream& file, const std::string& filename)` | Проверяет, открылся ли файл |
 
 ---
 
