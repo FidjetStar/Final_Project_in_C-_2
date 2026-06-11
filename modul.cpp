@@ -163,6 +163,10 @@ bool inputFromFile(int &n, int &m, int &k) {
     if (n <= 0 || k <= 0 || m < 1 || m > 31) {
         throw std::runtime_error("Некорректные значения: N>0, K>0, M от 1 до 31");
     }
+    std::cout << "\nДанные успешно считаны из файла:\n";
+    std::cout << "N = " << n << "\n";
+    std::cout << "M = " << m << "\n";
+    std::cout << "K = " << k << "\n\n";
     return true;
 }
 
