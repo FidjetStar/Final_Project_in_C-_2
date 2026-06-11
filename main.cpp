@@ -42,8 +42,12 @@ void IKM_menu() {
             case 3: {
                 n = m = k = 0;  // защита от мусорных значений
                 inputFromFile(n, m, k);
-                if (n > 0 && k > 0)
+                if (n > 0 && k > 0 && m >= 1 && m <= 31) {
                     IKM(n, m, k);
+                }
+                else {
+                    std::cout << "Некорректные данные из файла. Убедитесь, что N>0, K>0, M от 1 до 31.\n";
+                }
                 break;
             }
             case 0: {
