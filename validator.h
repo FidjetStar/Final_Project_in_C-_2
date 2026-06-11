@@ -3,33 +3,33 @@
 #include <limits>
 #include <string>
 #include <fstream>
+#include <stdexcept>
 
 class Validator {
 public:
     static int getValidChoice(int min, int max) {
-        int choice;
-        while (!(std::cin >> choice) || choice < min || choice > max) {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "Введите число от " << min << " до " << max << ": ";
+        int value;
+        if (!(std::cin >> value)) {
+            throw std::invalid_argument("Ошибка ввода: ожидалось целое число");
         }
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        return choice;
-    }
-    static int getValidNumber(const std::string& message = "Неверный ввод! Введите положительное число: ") {
-        int val;
-        while (!(std::cin >> val && val > 0)) {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << message;
+        if (value < min || value > max) {
+            throw std::out_of_range("Введите число от " + std::to_string(min) + " до " + std::to_string(max));
         }
-        return val;
+        return value;
     }
-    static bool isFileOpen(std::ifstream& file, const std::string& filename) {
+    static int getValidNumber(const std::string& message = "Ошибка ввода: введите положительное число") {
+        int value;
+        if (!(std::cin >> value)) {
+            throw std::invalid_argument(message);
+        }
+        if (value <= 0) {
+            throw std::domain_error("Число должно быть больше 0");
+        }
+        return value;
+    }
+    static void isFileOpen(std::ifstream& file, const std::string& filename) {
         if (!file.is_open()) {
-            std::cerr << "Ошибка открытия файла " << filename << "\n";
-            return false;
+            throw std::runtime_error("Ошибка открытия файла: " + filename);
         }
-        return true;
     }
 };
