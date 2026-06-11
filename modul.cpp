@@ -210,7 +210,7 @@ void IKM(int N, int M, int K){ // основная логика решения �
         Node* nextNode = current->getNext();
         workList.Remove(current);
         remain--;
-        std::cout << "Осталось после удаления: " << remain << "\n";
+        std::cout << "Осталось после удаления : " << remain << " элементов" << "\n";
         if (remain == 0)
             break;
         current = nextNode;
